@@ -41,7 +41,6 @@
         .letter_clicked {
             background-color: #aaa !important;
             border: #444 4px solid;
-            transition: background-color 0.1s ease-out;
         }
 
         .letter_correct {
@@ -160,38 +159,65 @@
 <script>
     var puzzle = "ENCDTONER"
     var answer = ["CONTENDER", "TENDER", "T"]
-
+    var input = ""
 
     for (i in puzzle){
         char = puzzle[i];
         var id = "#l" + i.toString();
         $( id ).html(char);
     }
+
+    $(function() {
+        $("#textbox").focus();
+    });
+
     $( ".letter" ).click(function() {
         if(!$(this).hasClass("letter_clicked")){
             $( this ).addClass("letter_clicked");
             $("#textbox").val($("#textbox").val() + $(this).text());
         }
     });
+
     $( "#clear_btn" ).click(function() {
         $("#letter_box div").removeClass("letter_clicked");
         $("#textbox").val("");
     });
 
     $( "#submit_btn" ).click(function() {
-        console.log($("#textbox").val())
         if (answer.includes($("#textbox").val())){
             $(".letter_clicked").addClass("letter_correct");
-            $(".letter_clicked").removeClass("letter_correct");
-            $("#letter_box div").removeClass("letter_clicked");
+            setTimeout(function(){
+                $(".letter").removeClass("letter_correct");
+            }, 400);
+            $(".letter").removeClass("letter_clicked");
+
             console.log("1")
         }
         else {
             console.log("2")
             $(".letter_clicked").addClass("letter_wrong");
-            $(".letter_clicked").removeClass("letter_wrong");
+            setTimeout(function(){
+                $(".letter").removeClass("letter_wrong");
+            }, 400);
+            $(".letter").removeClass("letter_clicked");
         };
         $("#textbox").val("");
+    });
+
+    // on backspace
+    $('#textbox').keyup(function(e){
+        if(e.keyCode == 8) {
+            
+        }
+    })  
+
+    $('#textbox').on('input', function() {
+        input = $("#textbox").val();
+        lastchar = $("#textbox").val().slice(-1).toUpperCase();
+        if(puzzle.includes(lastchar)){
+            
+        }
+
     });
 
 
