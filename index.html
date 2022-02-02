@@ -16,9 +16,9 @@
     <style>
         .heading {
             font-family: 'Nunito', sans-serif;
-            font-size: 2em;
             color: #666;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .letter {
@@ -71,23 +71,65 @@
             max-height: 100px;
         }
 
+        #clear_btn {
+            background-color: #ff5d52;
+            border: #a13830 4px solid;
+            transition: background-color 0.1s ease-out;
+        }
+
+        #clear_btn:hover {
+            background-color: #c4473e
+        }
+
+        #clear_btn:active {
+            background-color: #a13830
+        }
+
+        #submit_btn {
+            background-color: #49e98c;
+            border: #39b16b 4px solid;
+            transition: background-color 0.1s ease-out;
+        }
+
+        #submit_btn:hover {
+            background-color: #3ec777;
+        }
+
+        #submit_btn:active {
+            background-color: #39b16b;
+        }
+
         #textbox {
             border: none;
-            border-bottom: 2px black solid;
             text-align:center;
             font-size: 4vw;
             font-family: 'Nunito', sans-serif;
             width: 40vw;
             max-width: 600px;
-        }
-
-        #textbox:focus {
+            caret-color: transparent;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            cursor: default;
             outline: none;
         }
 
         .bi {
             max-width: 50px;
             max-height: 50px;
+        }
+
+        .letter_background {
+            background-color: #ddd;
+            border-radius: 4px;
+            width: 20px;
+            height: 30px;
+            margin: 2px;
+        }
+
+        .letter_row {
+            display: flex;
+            flex-flow: row nowrap;
+            margin-bottom: 10px;
         }
 
         @media screen and (min-width: 860px) {
@@ -106,13 +148,21 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid d-flex justify-content-center">
-                <a class="heading" href="#">anagram</a>
+                <a class="heading" style="font-size: 2em;" href="#">anagram</a>
             </div>
         </nav>
     </header>
+
     <main>
         <div class="d-flex justify-content-center">
             <div style="max-width: 600px; margin-top: 10px;">
+                <div class="d-flex flex-row justify-content-between">
+                    <div></div>
+                    <div>
+                        <h1 id="score" class="heading" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop">0</h1>
+                    </div>
+                    <div></div>
+                </div>
                 <div id="letter_box">
                     <div class="d-flex flex-row">
                         <div class="letter" id="l0"></div>
@@ -140,10 +190,10 @@
                         </button>
                     </div>
                     <div>
-                        <input type="text" id="textbox"/> 
+                        <input type="text" id="textbox" onkeypress="return /[a-z]/i.test(event.key)" maxlength="9" onblur="this.focus()"/> 
                     </div>
                     <div>
-                        <button class="button" id="submit_btn" style="background-color: #52ff9a;">                        
+                        <button class="button" id="submit_btn">                        
                             <svg xmlns="http://www.w3.org/2000/svg" width="6vw" height="6vw" fill="white" class="bi bi-check-lg" viewBox="0 0 16 16">
                                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
                             </svg>
@@ -152,73 +202,130 @@
                 </div>
             </div>
         </div>
+
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasWithBackdropLabel">Word list</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" id="wordList">
+              
+            </div>
+        </div>
+
     </main>
     <footer>
     </footer>
 </body>
 <script>
-    var puzzle = "ENCDTONER"
-    var answer = ["CONTENDER", "TENDER", "T"]
-    var input = ""
+    var puzzle = "ENCDTONER";
+    var answer = ["CONTENDER", "TENDER", "T"];
+    var input = "";
+    var guesses = [""];
+    var board = ["l0", "l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8"];
 
+
+    // Initialization
     for (i in puzzle){
         char = puzzle[i];
         var id = "#l" + i.toString();
         $( id ).html(char);
+    };
+
+    $("#textbox").focus();
+
+    for (i in answer) {
+        id = "word" + i
+        $("#wordList").append('<div id='+id+' class="letter_row"></div>');
+        for (x in answer[i]) {
+            $("#"+id).append('<div class="letter_background"></div>');
+        }
+    }
+    ////////////////////////////
+
+    function resetBoard() {
+        board = ["l0", "l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8"];
+        $("#textbox").val("");
+        $(".letter").removeClass("letter_clicked");
     }
 
-    $(function() {
-        $("#textbox").focus();
-    });
-
-    $( ".letter" ).click(function() {
-        if(!$(this).hasClass("letter_clicked")){
-            $( this ).addClass("letter_clicked");
-            $("#textbox").val($("#textbox").val() + $(this).text());
+    function submit() {
+        //correct
+        if (answer.includes($("#textbox").val().toUpperCase())){
+            if (guesses.includes($("#textbox").val())){
+                console.log($("#textbox").val())
+            }
+            else{
+                $(".letter_clicked").addClass("letter_correct");
+                setTimeout(function(){
+                    $(".letter").removeClass("letter_correct");
+                }, 400);
+                guesses.push($("#textbox").val())
+                $("#score").html(guesses.length)
+                console.log("1")
+            }
         }
-    });
-
-    $( "#clear_btn" ).click(function() {
-        $("#letter_box div").removeClass("letter_clicked");
-        $("#textbox").val("");
-    });
-
-    $( "#submit_btn" ).click(function() {
-        if (answer.includes($("#textbox").val())){
-            $(".letter_clicked").addClass("letter_correct");
-            setTimeout(function(){
-                $(".letter").removeClass("letter_correct");
-            }, 400);
-            $(".letter").removeClass("letter_clicked");
-
-            console.log("1")
-        }
+        //wrong
         else {
             console.log("2")
             $(".letter_clicked").addClass("letter_wrong");
             setTimeout(function(){
                 $(".letter").removeClass("letter_wrong");
             }, 400);
-            $(".letter").removeClass("letter_clicked");
         };
-        $("#textbox").val("");
+        resetBoard();
+    };
+
+    $( ".letter" ).click(function() {
+        if(!$(this).hasClass("letter_clicked")){
+            $( this ).addClass("letter_clicked");
+            $("#textbox").val($("#textbox").val() + $(this).text());
+            i = board.indexOf(($(this).attr('id')));
+            board.splice(i, 1);
+            console.log(board);
+        }
+    });
+
+    $( "#clear_btn" ).click(function() {
+        resetBoard();
+    });
+
+    $( "#submit_btn" ).click(function () {
+        submit();
     });
 
     // on backspace
     $('#textbox').keyup(function(e){
         if(e.keyCode == 8) {
-            
+            input = $("#textbox").val();
+            for (i in input){
+                
+            }
+        }
+        if (event.keyCode === 13) {
+            submit();
+        }
+        if(e.key === "Escape") {
+            resetBoard();
         }
     })  
 
     $('#textbox').on('input', function() {
         input = $("#textbox").val();
         lastchar = $("#textbox").val().slice(-1).toUpperCase();
-        if(puzzle.includes(lastchar)){
-            
+        console.log(lastchar)
+        if(puzzle.includes(lastchar) && lastchar != ""){
+            var i = puzzle.indexOf(lastchar)
+            var id = "#l" + i.toString();
+            $( id ).addClass("letter_clicked");
         }
 
     });
+
+    $( "#score" ).click(function() {
+        
+    });
+
 
 
 
