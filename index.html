@@ -34,7 +34,7 @@
             font-size: 10vw;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.1s ease-out;
+            transition: background-color 0.2s ease-out;
             cursor: pointer;
         }
 
@@ -102,7 +102,7 @@
         #textbox {
             border: none;
             text-align:center;
-            font-size: 4vw;
+            font-size: 5vw;
             font-family: 'Nunito', sans-serif;
             width: 40vw;
             max-width: 600px;
@@ -113,6 +113,10 @@
             outline: none;
         }
 
+        .textbox_wrong {
+            color: maroon;
+        }
+
         .bi {
             max-width: 50px;
             max-height: 50px;
@@ -121,9 +125,14 @@
         .letter_background {
             background-color: #ddd;
             border-radius: 4px;
-            width: 20px;
+            width: 25px;
             height: 30px;
             margin: 2px;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+            font-size: 18px;
+            padding-top: 2px;
+            color: #666;
         }
 
         .letter_row {
@@ -148,7 +157,7 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid d-flex justify-content-center">
-                <a class="heading" style="font-size: 2em;" href="#">anagram</a>
+                <a class="heading" style="font-size: 2em;" data-bs-toggle="modal" data-bs-target="#anagramModal">anagram</a>
             </div>
         </nav>
     </header>
@@ -190,7 +199,7 @@
                         </button>
                     </div>
                     <div>
-                        <input type="text" id="textbox" onkeypress="return /[a-z]/i.test(event.key)" maxlength="9" onblur="this.focus()"/> 
+                        <input type="text" id="textbox" onkeypress="return /[a-z]/i.test(event.key)" maxlength="9"/> 
                     </div>
                     <div>
                         <button class="button" id="submit_btn">                        
@@ -203,15 +212,29 @@
             </div>
         </div>
 
+        <!--word list-->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
             <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasWithBackdropLabel">Word list</h5>
+              <h4 class="offcanvas-title" id="offcanvasWithBackdropLabel">Word list</h4>
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            <h5 id="puzzle_info"></h5>
             <div class="offcanvas-body" id="wordList">
               
             </div>
         </div>
+
+        <!--anagram modal-->
+        <div class="modal fade" id="anagramModal" tabindex="-1" aria-labelledby="anagramModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float:right;"></button>
+                  <h4 class="modal-title heading" id="anagramModalLabel">anagram</h4>
+                </div>
+              </div>
+            </div>
+          </div>
 
     </main>
     <footer>
@@ -219,10 +242,8 @@
 </body>
 <script>
     var puzzle = "ENCDTONER";
-    var answer = ["CONTENDER", "TENDER", "T"];
-    var input = "";
-    var guesses = [""];
-    var board = ["l0", "l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8"];
+    var answer = ["T", "TO", "DETER", "ENTER", "ERECT", "NOTED", "NOTER", "TONED", "CENTER", "DECENT", "TENNER", "TONNER", "TENDER", "CONTENDER"];
+    var guesses = [];
 
 
     // Initialization
@@ -232,42 +253,54 @@
         $( id ).html(char);
     };
 
-    $("#textbox").focus();
+    // $("#textbox").focus();
+
+    // $(window).focus(function(e) {
+    //     $("#textbox").focus();
+    // });
 
     for (i in answer) {
         id = "word" + i
         $("#wordList").append('<div id='+id+' class="letter_row"></div>');
+        $("#"+id).append('<span style="color: #888; padding-top: 4px; width: 25px;">'+(parseInt(i)+1)+'</span>');
         for (x in answer[i]) {
             $("#"+id).append('<div class="letter_background"></div>');
         }
     }
+
+
+    
     ////////////////////////////
 
     function resetBoard() {
-        board = ["l0", "l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8"];
+        board = puzzle;
         $("#textbox").val("");
         $(".letter").removeClass("letter_clicked");
     }
 
     function submit() {
         //correct
-        if (answer.includes($("#textbox").val().toUpperCase())){
+        input = $("#textbox").val().toUpperCase()
+        if (answer.includes(input)){
             if (guesses.includes($("#textbox").val())){
-                console.log($("#textbox").val())
             }
             else{
+                word_id = "word" + answer.indexOf(input)
+                children = document.getElementById(word_id).getElementsByTagName('*');
+                for (i in input){
+                    children[parseInt(i)+1].innerHTML = input[i];
+                }
+                guesses.push($("#textbox").val())
+                $("#score").html(guesses.length)
+                console.log(guesses)
                 $(".letter_clicked").addClass("letter_correct");
                 setTimeout(function(){
                     $(".letter").removeClass("letter_correct");
                 }, 400);
-                guesses.push($("#textbox").val())
-                $("#score").html(guesses.length)
-                console.log("1")
             }
         }
         //wrong
         else {
-            console.log("2")
             $(".letter_clicked").addClass("letter_wrong");
             setTimeout(function(){
                 $(".letter").removeClass("letter_wrong");
@@ -297,10 +330,7 @@
     // on backspace
     $('#textbox').keyup(function(e){
         if(e.keyCode == 8) {
-            input = $("#textbox").val();
-            for (i in input){
-                
-            }
+
         }
         if (event.keyCode === 13) {
             submit();
@@ -311,15 +341,22 @@
     })  
 
     $('#textbox').on('input', function() {
-        input = $("#textbox").val();
-        lastchar = $("#textbox").val().slice(-1).toUpperCase();
-        console.log(lastchar)
-        if(puzzle.includes(lastchar) && lastchar != ""){
-            var i = puzzle.indexOf(lastchar)
-            var id = "#l" + i.toString();
-            $( id ).addClass("letter_clicked");
+        input = $("#textbox").val().toUpperCase();
+        var board = puzzle
+        $(".letter").removeClass("letter_clicked");
+        for (i in input) {
+            if (board.includes(input[i])){
+                var x = board.indexOf(input[i]);
+                console.log(i)   
+                var id = "#l" + x.toString();
+                board = board.replace(input[i], "0");
+                console.log(board)
+                $( id ).addClass("letter_clicked");
+            }
+            else {
+                //wrong
+            }
         }
-
     });
 
     $( "#score" ).click(function() {
