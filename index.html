@@ -12,19 +12,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
         .heading {
             font-family: 'Nunito', sans-serif;
             color: #666;
             text-decoration: none;
-            cursor: pointer;
         }
 
         .letter {
             display: flex;
             background-color: #eee;
-            border: grey 4px solid;
+            border: #aaa 2px solid;
             border-radius: 10px;
             width: 25vw;
             height: 25vw;
@@ -77,9 +77,6 @@
             transition: background-color 0.1s ease-out;
         }
 
-        #clear_btn:hover {
-            background-color: #c4473e
-        }
 
         #clear_btn:active {
             background-color: #a13830
@@ -91,9 +88,6 @@
             transition: background-color 0.1s ease-out;
         }
 
-        #submit_btn:hover {
-            background-color: #3ec777;
-        }
 
         #submit_btn:active {
             background-color: #39b16b;
@@ -141,13 +135,36 @@
             margin-bottom: 10px;
         }
 
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 1.6rem;
+            font-size: 0.8rem;
+        }
+
+        #donation_collapse:hover {
+            -webkit-box-shadow: inset 0px 25px 50px -40px rgba(0, 140, 255,0.6); 
+            box-shadow: inset 0px 25px 50px -40px rgba(0, 140, 255,0.6);
+            transition: 0.5s;
+        }
+
         @media screen and (min-width: 860px) {
-            .letter {
+            .letter { 
                 font-size: 84px;
             }
             #textbox {
                 width: 250px;
                 font-size: 32px;
+            }
+
+            #clear_btn:hover {
+                background-color: #c4473e
+            }
+
+            
+            #submit_btn:hover {
+                background-color: #3ec777;
             }
         }
                 
@@ -157,7 +174,7 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid d-flex justify-content-center">
-                <a class="heading" style="font-size: 2em;" data-bs-toggle="modal" data-bs-target="#anagramModal">anagram</a>
+                <a class="heading" style="font-size: 2em; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#anagramModal">anagram</a>
             </div>
         </nav>
     </header>
@@ -168,7 +185,7 @@
                 <div class="d-flex flex-row justify-content-between">
                     <div></div>
                     <div>
-                        <h1 id="score" class="heading" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop">0</h1>
+                        <h1 id="score" class="heading" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBackdrop" aria-controls="offcanvasWithBackdrop" style="cursor:pointer;">0</h1>
                     </div>
                     <div></div>
                 </div>
@@ -231,6 +248,28 @@
                 <div class="modal-body">
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float:right;"></button>
                   <h4 class="modal-title heading" id="anagramModalLabel">anagram</h4>
+                  <p style="font-family: 'Nunito', sans-serif; font-size: 0.8em; color: #bbb;">PUZZLE #1 | 5/2/22</p>
+                  <div class="justify-self-center">
+                      <center>
+                        <h6 class="heading" style="color: #aaa;">NEXT PUZZLE IN</h6>
+                        <h4 class="heading" id="timer"></h4>
+                      </center>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-between py-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" id="donation_collapse">
+                    <div>
+                        <p class="heading" style="margin-bottom: -10px;">Donate</p>
+                        <span style="font-family: 'Nunito', sans-serif; font-size: 0.8em; color: #bbb;">anagram will always remain ad free</span>
+                    </div>
+                    <div>
+                        <span><img src="media/bitcoin.png" width="25px"/></span>
+                        <span><img src="media/ether.png" width="25px"/></span>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body d-flex justify-content-center">
+                        <img src="media/eth_qr.png" width="100%" style="max-width: 250px;"/>
+                    </div>
                 </div>
               </div>
             </div>
@@ -238,6 +277,7 @@
 
     </main>
     <footer>
+        <center style="color: #bbb;">anagram 2022 | quacc.eth</center>
     </footer>
 </body>
 <script>
@@ -268,12 +308,25 @@
         }
     }
 
+    var countDownDate = new Date("Feb 9, 2022 00:00:00").getTime();
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "Starting soon";
+        }
+    }, 1000);
+
 
     
     ////////////////////////////
 
     function resetBoard() {
-        board = puzzle;
         $("#textbox").val("");
         $(".letter").removeClass("letter_clicked");
     }
@@ -313,9 +366,6 @@
         if(!$(this).hasClass("letter_clicked")){
             $( this ).addClass("letter_clicked");
             $("#textbox").val($("#textbox").val() + $(this).text());
-            i = board.indexOf(($(this).attr('id')));
-            board.splice(i, 1);
-            console.log(board);
         }
     });
 
