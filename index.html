@@ -322,7 +322,7 @@
         for(input in guesses) {
             word_id = "word" + answer.indexOf(guesses[input])
             children = document.getElementById(word_id).getElementsByTagName('*');
-            for (i in input){
+            for (i in guesses[input]){
                 children[parseInt(i)+1].innerHTML = input[i];
             }
         }
@@ -368,7 +368,7 @@
         //correct
         input = $("#textbox").val().toUpperCase()
         if (answer.includes(input)){
-            if (guesses.includes($("#textbox").val())){
+            if (guesses.includes(input)){
             }
             else{
                 word_id = "word" + answer.indexOf(input)
@@ -376,7 +376,7 @@
                 for (i in input){
                     children[parseInt(i)+1].innerHTML = input[i];
                 }
-                guesses.push($("#textbox").val())
+                guesses.push(input)
                 $("#score").html(guesses.length)
                 $(".letter_clicked").addClass("letter_correct");
                 setCookie('guesses', guesses, 9999)
