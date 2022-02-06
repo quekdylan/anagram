@@ -307,7 +307,7 @@
     var answer = ['CONTENDER', 'CENTRED', 'CENTER', 'CENTRE', 'DECENT', 'RECENT', 'RENTED', 'RODENT', 'TENDER', 'TENDON', 'TENNER', 'ENTER', 'ERECT', 'NOTED', 'TENOR', 'TONED', 'TONER', 'TREND', 'CENT', 'DENT', 'DOTE', 'NOTE', 'RENT', 'TEED', 'TEEN', 'TEND', 'TOED', 'TONE', 'TORE', 'TORN', 'TREE', 'COT', 'DOT', 'NET', 'NOT', 'ORT', 'ROT', 'TED', 'TEE', 'TEN', 'TOD', 'TOE', 'TON', 'TOR']
     var guesses = [];
     if (getCookie('guesses') != "") {
-        guesses.push(getCookie('guesses'));
+        guesses = (getCookie('guesses').split(","));
         $("#score").html(guesses.length);
         for(input in guesses) {
             word_id = "word" + answer.indexOf(input)
