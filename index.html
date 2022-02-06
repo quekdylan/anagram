@@ -276,14 +276,50 @@
           </div>
 
     </main>
-    <footer>
-        <center style="color: #bbb;">anagram 2022 | quacc.eth</center>
-    </footer>
 </body>
 <script>
+
+    // cookie management
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+
     var puzzle = "ENCDTONER";
-    var answer = ["T", "TO", "DETER", "ENTER", "ERECT", "NOTED", "NOTER", "TONED", "CENTER", "DECENT", "TENNER", "TONNER", "TENDER", "CONTENDER"];
-    var guesses = [];
+    var answer = ['CONTENDER', 'CENTRED', 'CENTER', 'CENTRE', 'DECENT', 'RECENT', 'RENTED', 'RODENT', 'TENDER', 'TENDON', 'TENNER', 'ENTER', 'ERECT', 'NOTED', 'TENOR', 'TONED', 'TONER', 'TREND', 'CENT', 'DENT', 'DOTE', 'NOTE', 'RENT', 'TEED', 'TEEN', 'TEND', 'TOED', 'TONE', 'TORE', 'TORN', 'TREE', 'COT', 'DOT', 'NET', 'NOT', 'ORT', 'ROT', 'TED', 'TEE', 'TEN', 'TOD', 'TOE', 'TON', 'TOR']
+    if (getCookie('guesses') == "") {
+        console.log("new")
+        var guesses = [];
+    } 
+    else {
+        var guesses = getCookie('guesses');
+        $("#score").html(guesses.length);
+        for(input in guesses) {
+            word_id = "word" + answer.indexOf(input)
+            children = document.getElementById(word_id).getElementsByTagName('*');
+            for (i in input){
+                children[parseInt(i)+1].innerHTML = input[i];
+            }
+        }
+    }
 
 
     // Initialization
@@ -345,8 +381,9 @@
                 }
                 guesses.push($("#textbox").val())
                 $("#score").html(guesses.length)
-                console.log(guesses)
                 $(".letter_clicked").addClass("letter_correct");
+                setCookie('guesses', guesses, 9999)
+                console.log(getCookie('guesses'))
                 setTimeout(function(){
                     $(".letter").removeClass("letter_correct");
                 }, 400);
