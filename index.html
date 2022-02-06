@@ -310,7 +310,7 @@
         guesses = (getCookie('guesses').split(","));
         $("#score").html(guesses.length);
         for(input in guesses) {
-            word_id = "word" + answer.indexOf(input)
+            word_id = "word" + answer.indexOf(guesses[input])
             children = document.getElementById(word_id).getElementsByTagName('*');
             for (i in input){
                 children[parseInt(i)+1].innerHTML = input[i];
