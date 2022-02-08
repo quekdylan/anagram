@@ -640,16 +640,16 @@
     }
 
     function tweet() {
-        url = "https://twitter.com/intent/tweet?text=test"
         toSolve = ""
         for (i in answer) {
             if (guesses.indexOf(answer[i]) == -1) {
-                toSolve += (parseInt(i)+1).toString() + ", ";
+                toSolve += (parseInt(i)+1).toString() + ",";
             }
         }
         toSolve = toSolve.slice(0, -2)
-        console.log(toSolve)
-        //window.open(url, '_blank'); 
+        url = "https://twitter.com/intent/tweet?text=anagram " + puzzle_number + "\n My unsolved words: " + toSolve;
+        console.log
+        window.open(url, '_blank'); 
     }
 
     $( ".letter" ).click(function() {
