@@ -15,8 +15,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
+        body
+        {
+            font-family: 'Nunito', sans-serif !important;
+        }
+
         .heading {
-            font-family: 'Nunito', sans-serif;
             color: #666;
             text-decoration: none;
         }
@@ -25,13 +29,12 @@
             display: flex;
             background-color: #eee;
             border: #aaa 2px solid;
-            border-radius: 10px;
-            width: 25vw;
-            height: 25vw;
-            margin: 5px;
+            border-radius: 8px;
+            width: 28vw;
+            height: 28vw;
+            margin: 4px;
             max-height: 186px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 10vw;
+            font-size: 12vw;
             justify-content: center;
             align-items: center;
             transition: background-color 0.2s ease-out;
@@ -95,20 +98,25 @@
 
         #textbox {
             border: none;
+            border-radius: 100px;
+            -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); 
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
             text-align:center;
             font-size: 5vw;
             font-family: 'Nunito', sans-serif;
-            width: 40vw;
-            max-width: 600px;
+            width: 45vw;
+            max-width: 300px;
             caret-color: transparent;
             transition: all 0.2s;
             text-transform: uppercase;
             cursor: default;
             outline: none;
+            position: relative;
         }
 
         .textbox_wrong {
-            color: maroon;
+            -webkit-box-shadow: 0px 0px 20px 0px rgba(220, 0, 0, 0.5) !important;
+            box-shadow: 0px 0px 20px 0px rgba(220,0,0,0.5) !important;
         }
 
         .bi {
@@ -122,7 +130,6 @@
             width: 25px;
             height: 30px;
             margin: 2px;
-            font-family: 'Nunito', sans-serif;
             text-align: center;
             font-size: 18px;
             padding-top: 2px;
@@ -135,26 +142,83 @@
             margin-bottom: 10px;
         }
 
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 1.6rem;
-            font-size: 0.8rem;
-        }
-
         #donation_collapse:hover {
             -webkit-box-shadow: inset 0px 25px 50px -40px rgba(0, 140, 255,0.6); 
             box-shadow: inset 0px 25px 50px -40px rgba(0, 140, 255,0.6);
             transition: 0.5s;
         }
 
+        #wordList::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            background-color: #F5F5F5;
+        }
+
+        #wordList::-webkit-scrollbar
+        {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        #wordList::-webkit-scrollbar-thumb
+        {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #ccc;
+        }
+
+        .bi-backspace-fill {
+            position: absolute;
+            right: 2vw;
+        }
+
+        .nav-link {
+            color: grey;
+        }
+
+        .nav-pills > li > button {
+            color: grey;
+            border-radius: 100px;
+            font-size: 0.8em;
+            transition: 0.4s;
+        }
+
+        .nav-pills > li > button.active {
+            -webkit-box-shadow: 0 0 10px rgba(0,0,0,.3);
+            box-shadow: 0 0 10px rgba(0,0,0,.3);
+            border-radius: 100px;
+        }
+
+        .addressBox {
+            border: 1px #ddd solid;
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+            box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+            padding: 5px;
+            transition: 0.4s;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .addressBox:hover {
+            border: 1px #888 solid;
+            -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,.2);
+            box-shadow: inset 0 0 10px rgba(0,0,0,.2);
+        }
+
+
         @media screen and (min-width: 860px) {
             .letter { 
                 font-size: 84px;
             }
             #textbox {
-                width: 250px;
+                width: 300px;
                 font-size: 32px;
             }
 
@@ -166,6 +230,13 @@
             #submit_btn:hover {
                 background-color: #3ec777;
             }
+
+            
+            .bi-backspace-fill {
+                display: none;
+            }
+
+
         }
                 
     </style>
@@ -174,7 +245,7 @@
     <header>
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid d-flex justify-content-center">
-                <a class="heading" style="font-size: 2em; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#anagramModal">anagram</a>
+                <a class="heading" style="font-size: 1.6em; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#anagramModal">anagram</a>
             </div>
         </nav>
     </header>
@@ -215,8 +286,13 @@
                             </svg>
                         </button>
                     </div>
-                    <div>
-                        <input type="text" id="textbox" onkeypress="return /[a-z]/i.test(event.key)" maxlength="9"/> 
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="text" id="textbox" onkeypress="return /[a-z]/i.test(event.key)" maxlength="9"/>
+                        <span style="display: contents;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="4vw" height="4vw" fill="#bbb" class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                                <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z"/>
+                            </svg>
+                        </span>
                     </div>
                     <div>
                         <button class="button" id="submit_btn">                        
@@ -233,9 +309,15 @@
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
             <div class="offcanvas-header">
               <h4 class="offcanvas-title" id="offcanvasWithBackdropLabel">Word list</h4>
+              <a type="button" class="btn btn-info" onclick="tweet()" style="width: fit-content; color: white; font-weight: bold; border-radius: 100px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 2 16 16">
+                    <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
+                </svg>
+                Tweet
+              </a>    
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
             </div>
-            <h5 id="puzzle_info"></h5>
             <div class="offcanvas-body" id="wordList">
               
             </div>
@@ -267,8 +349,52 @@
                     </div>
                 </div>
                 <div class="collapse" id="collapseExample">
-                    <div class="card card-body d-flex justify-content-center">
-                        <img src="media/eth_qr.png" width="100%" style="max-width: 250px;"/>
+                    <div class="card card-body d-flex flex-row justify-content-center px-1">
+                        <div style="width: 50%">
+                            <img src="media/eth_qr.png" width="100%"/>
+
+                        </div>
+                        <div style="width: 50%">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active p-2" id="home-tab" style="font-size: 0.8rem;" data-bs-toggle="tab" data-bs-target="#btc_tab" type="button" role="tab" aria-controls="home" aria-selected="true">Bitcoin</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link p-2" id="profile-tab" style="font-size: 0.8rem;" data-bs-toggle="tab" data-bs-target="#eth_tab" type="button" role="tab" aria-controls="profile" aria-selected="false">Ethereum/L2</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content mt-2" id="myTabContent">
+                                <div class="tab-pane fade show active" id="btc_tab" role="tabpanel" aria-labelledby="home-tab">
+                                    <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                          <button class="nav-link active" id="pills-lightning-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Lightning</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                          <button class="nav-link" id="pills-bitcoin-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Bitcoin</button>
+                                        </li>
+                                      </ul>
+                                      <div class="tab-content" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-lightning-tab">
+                                            Lightning
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-bitcoin-tab">
+                                            Bitcoin
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="tab-pane fade" id="eth_tab" role="tabpanel" aria-labelledby="profile-tab">
+                                    <span style="font-size: .8em; color: #aaa; word-wrap: normal;">Polygon/Arbitrium/BSC etc</span>
+                                </div>
+
+                            </div>
+                            <div class="addressBox" data-toggle="tooltip" data-placement="top" title="Tooltip on top" data-trigger="click" onclick="copy('0x84ac67A7C2CfeD6D4D4f42e44DA24fC30532b248')">
+                                <span>0x84ac...b248</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-clipboard" viewBox="0 0 16 16">
+                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
               </div>
@@ -304,6 +430,7 @@
 
 
     var puzzle = "ENCDTONER";
+
     var answer = ['CONTENDER', 'CENTRED', 'CENTER', 'CENTRE', 'DECENT', 'RECENT', 'RENTED', 'RODENT', 'TENDER', 'TENDON', 'TENNER', 'ENTER', 'ERECT', 'NOTED', 'TENOR', 'TONED', 'TONER', 'TREND', 'CENT', 'DENT', 'DOTE', 'NOTE', 'RENT', 'TEED', 'TEEN', 'TEND', 'TOED', 'TONE', 'TORE', 'TORN', 'TREE', 'COT', 'DOT', 'NET', 'NOT', 'ORT', 'ROT', 'TED', 'TEE', 'TEN', 'TOD', 'TOE', 'TON', 'TOR']
     var guesses = [];
 
@@ -335,11 +462,15 @@
         $( id ).html(char);
     };
 
-    // $("#textbox").focus();
+    if($(window).width() > 860) {
+        $("#textbox").focus();
 
-    // $(window).focus(function(e) {
-    //     $("#textbox").focus();
-    // });
+        $("#textbox").blur(function() {
+            $("#textbox").focus();
+        });
+        $("#textbox").css("cursor", "text");
+        $("#textbox").css("cursor", "text");
+    }
 
     var countDownDate = new Date("Feb 9, 2022 00:00:00").getTime();
     var x = setInterval(function() {
@@ -389,12 +520,55 @@
         //wrong
         else {
             $(".letter_clicked").addClass("letter_wrong");
+            $("#textbox").addClass("textbox_wrong");
             setTimeout(function(){
                 $(".letter").removeClass("letter_wrong");
+                $("#textbox").removeClass("textbox_wrong");
             }, 400);
         };
         resetBoard();
     };
+
+    function updateBoard(){
+        input = $("#textbox").val().toUpperCase();
+        var board = puzzle
+        $(".letter").removeClass("letter_clicked");
+        console.log(input);
+        if (input == "") {
+            $("#textbox").removeClass("textbox_wrong");
+            return 0;
+        }
+        for (i in input) {
+            if (board.includes(input[i])){
+                var x = board.indexOf(input[i]);
+                var id = "#l" + x.toString();
+                board = board.replace(input[i], "0");
+                $( id ).addClass("letter_clicked");
+                $("#textbox").removeClass("textbox_wrong");
+            }
+            else {
+                $("#textbox").addClass("textbox_wrong");
+                break;
+            }
+        }
+    }
+
+    function copy(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element)).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+
+    function showAlert(message){
+
+    }
+
+    function tweet() {
+        url = "https://twitter.com/intent/tweet?text=test"
+        window.open(url, '_blank'); 
+    }
 
     $( ".letter" ).click(function() {
         if(!$(this).hasClass("letter_clicked")){
@@ -424,23 +598,15 @@
         }
     })  
 
+
+
     $('#textbox').on('input', function() {
-        input = $("#textbox").val().toUpperCase();
-        var board = puzzle
-        $(".letter").removeClass("letter_clicked");
-        for (i in input) {
-            if (board.includes(input[i])){
-                var x = board.indexOf(input[i]);
-                console.log(i)   
-                var id = "#l" + x.toString();
-                board = board.replace(input[i], "0");
-                console.log(board)
-                $( id ).addClass("letter_clicked");
-            }
-            else {
-                //wrong
-            }
-        }
+        updateBoard();
+    });
+
+    $( ".bi-backspace-fill" ).click(function() {
+        $("#textbox").val($("#textbox").val().substring(0, $("#textbox").val().length - 1));
+        updateBoard();
     });
 
     $( "#score" ).click(function() {
