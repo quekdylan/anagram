@@ -42,9 +42,14 @@
             cursor: pointer;
         }
 
+        .letter:hover, .letter:active {
+            background-color: #ccc;
+            border: #444 2px solid;
+        }
+
         .letter_clicked {
             background-color: #aaa !important;
-            border: #444 4px solid;
+            border: #444 2px solid;
         }
 
         .letter_correct {
@@ -59,8 +64,12 @@
 
         #l4 {
             background-color: #91c3ff;
-            border: #406fa8 6px solid;
+            border: #406fa8 2px solid;
             color: #1d314a;
+        }
+
+        #l4:hover {
+            background-color: #5e8fca;
         }
 
         .button {
@@ -126,7 +135,7 @@
         }
 
         .letter_background {
-            background-color: #ddd;
+            background-color: #eee;
             border-radius: 4px;
             width: 25px;
             height: 30px;
@@ -141,12 +150,6 @@
             display: flex;
             flex-flow: row nowrap;
             margin-bottom: 10px;
-        }
-
-        #donation_collapse:hover {
-            -webkit-box-shadow: inset 0px 25px 50px -40px rgba(0, 140, 255,0.6); 
-            box-shadow: inset 0px 25px 50px -40px rgba(0, 140, 255,0.6);
-            transition: 0.5s;
         }
 
         #wordList::-webkit-scrollbar-track
@@ -195,9 +198,9 @@
 
         .addressBox {
             border: 1px #ddd solid;
-            border-radius: 100px;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.1);
-            box-shadow: inset 0 0 6px rgba(0,0,0,.1);
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1);
+            box-shadow: inset 0 0 4px rgba(0,0,0,.1);
             padding: 5px;
             transition: 0.4s;
             cursor: pointer;
@@ -205,8 +208,8 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: auto;
-            margin-bottom: 20px;
+            margin: 10px auto;
+            width: 60%;
         }
 
         .addressBox:hover {
@@ -271,6 +274,27 @@
             transform: translateX(16px);
         }
 
+        .tab-pane {
+            text-align: center;
+        }
+
+        .addressQR {
+            margin: 5px auto;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 60%;
+        }
+
+        .card.card-body {
+            -webkit-box-shadow: inset 0 5px 10px rgba(0,0,0,.1);
+            box-shadow: inset 0 5px 10px rgba(0,0,0,.1);
+        } 
+
+        .offcanvas {
+            backdrop-filter: blur(40px);
+            background-color: rgba(255,255,255,.8);
+        }
 
 
         @media screen and (min-width: 860px) {
@@ -295,7 +319,6 @@
             .bi-backspace-fill {
                 display: none;
             }
-
 
         }
                 
@@ -366,20 +389,23 @@
         </div>
 
         <!--word list-->
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
-            <div class="offcanvas-header">
-              <h4 class="offcanvas-title" id="offcanvasWithBackdropLabel">Word list</h4>
-              <a type="button" class="btn btn-info" onclick="tweet()" style="width: fit-content; color: white; font-weight: bold; border-radius: 100px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 2 16 16">
-                    <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
-                </svg>
-                Tweet
-              </a>    
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-
+        <div class="offcanvas offcanvas-start" tabindex="-1"  data-bs-backdrop="false" id="offcanvasWithBackdrop" aria-labelledby="offcanvasWithBackdropLabel">
+            <div class="offcanvas-header align-items-start">
+                <div>
+                    <h4 class="offcanvas-title pb--1" id="offcanvasWithBackdropLabel">Word list</h4>
+                    <span class="puzzle_info" style="display: block; font-size: 0.8em; color: #bbb; margin-top: -5px;">PUZZLE #1 | 5/2/22</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a type="button" class="btn btn-info" onclick="tweet()" style="width: fit-content; color: white; font-weight: bold; border-radius: 100px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 2 16 16">
+                            <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
+                        </svg>
+                        Tweet
+                    </a>    
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
             </div>
             <div class="offcanvas-body" id="wordList">
-              
             </div>
         </div>
 
@@ -390,7 +416,7 @@
                 <div class="modal-body">
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float:right;"></button>
                   <h4 class="modal-title heading" id="anagramModalLabel">anagram</h4>
-                  <p id="puzzle_info" style="font-size: 0.8em; color: #bbb;">PUZZLE #1 | 5/2/22</p>
+                  <p class="puzzle_info" style="font-size: 0.8em; color: #bbb;">PUZZLE #1 | 5/2/22</p>
                   <div class="justify-self-center justify-content-center">
                       <center>
                         <h6 class="heading" style="color: #aaa;">NEXT PUZZLE IN</h6>
@@ -400,7 +426,7 @@
                   <div style="display: flex; justify-content: space-between; border-top: 1px #ddd solid; padding-top: 20px;">
                       <span>Dark Mode</span>
                       <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="darkModeToggle">
                         <span class="slider"></span>
                       </label>
                   </div>
@@ -416,23 +442,19 @@
                     </div>
                 </div>
                 <div class="collapse" id="collapseExample">
-                    <div class="card card-body d-flex flex-row justify-content-center px-1">
-                        <div style="width: 50%">
-                            <img src="media/eth_qr.png" width="100%"/>
-
-                        </div>
-                        <div style="width: 50%;" class="d-flex flex-column">
+                    <div class="card card-body d-flex flex-column justify-content-center">
+                        <div class="d-flex flex-column justify-content-center">
                             <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active p-2" id="home-tab" style="font-size: 0.8rem;" data-bs-toggle="tab" data-bs-target="#btc_tab" type="button" role="tab" aria-controls="home" aria-selected="true">Bitcoin</button>
+                                    <button class="nav-link active p-2" id="btc-tab" style="font-size: 0.8rem;" data-bs-toggle="tab" data-bs-target="#btc_tab" type="button" role="tab" aria-controls="home" aria-selected="true">Bitcoin</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link p-2" id="profile-tab" style="font-size: 0.8rem;" data-bs-toggle="tab" data-bs-target="#eth_tab" type="button" role="tab" aria-controls="profile" aria-selected="false">Ethereum/L2</button>
+                                    <button class="nav-link p-2" id="eth-tab" style="font-size: 0.8rem;" data-bs-toggle="tab" data-bs-target="#eth_tab" type="button" role="tab" aria-controls="profile" aria-selected="false">Ethereum/L2</button>
                                 </li>
                             </ul>
                             <div class="tab-content mt-2" id="myTabContent">
-                                <div class="tab-pane fade show active" id="btc_tab" role="tabpanel" aria-labelledby="home-tab">
-                                    <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
+                                <div class="tab-pane fade show active" id="btc_tab" role="tabpanel" aria-labelledby="btc-tab">
+                                    <ul class="nav nav-pills d-flex justify-content-center" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
                                           <button class="nav-link active" id="pills-lightning-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Lightning</button>
                                         </li>
@@ -442,24 +464,47 @@
                                       </ul>
                                       <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-lightning-tab">
-                                            Lightning
+                                            
+                                            <!--Lightning-->
+                                            <img class="addressQR" src="media/lightning_qr.png"/>
+                                            <div class="addressBox" data-toggle="tooltip" data-placement="top" title="Tooltip on top" data-trigger="click" onclick="copy('lnbc1p3q8d0ypp5ul2jkd6xdywjcpxqvhejw35zfz6pap7tj4q8mgas3fl2zwwp9jtqdqvg9hxzemjv9ksxqyjw5q9qtzqqqqqq9qsqsp5d83z4ng6jsl5hyv8jmqqwuel6dn3ckczxg5ddq76ggewqs3hwrhsrzjqwryaup9lh50kkranzgcdnn2fgvx390wgj5jd07rwr3vxeje0glcllulk0sspj5euuqqqqlgqqqqqeqqjq8crydh5tkmusaxxde985e8gsr7dr2am75mqv9w2utp2lhddem8f862czl8v9yag0xyf9nhht0ktzjlzdznypww4ecukgmzkx35svvggp2g70me')">
+                                                <span>lnbc1p3q...70me</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-clipboard" viewBox="0 0 16 16">
+                                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                                </svg>
+                                            </div>
+
                                         </div>
                                         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-bitcoin-tab">
-                                            Bitcoin
+                                            
+                                            <!--Bitcoin-->
+                                            <img class="addressQR" src="media/btc_qr.png"/>
+                                            <div class="addressBox" data-toggle="tooltip" data-placement="top" title="Tooltip on top" data-trigger="click" onclick="copy('3EMksvHuJnMocPJ8zsfXuex91bq3WJ83p5')">
+                                                <span>3EMk...83p5</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-clipboard" viewBox="0 0 16 16">
+                                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                                </svg>
+                                            </div>
+
                                         </div>
                                       </div>
                                 </div>
-                                <div class="tab-pane fade" id="eth_tab" role="tabpanel" aria-labelledby="profile-tab">
-                                    <span style="font-size: .8em; color: #aaa; word-wrap: normal;">Polygon/Arbitrium/BSC etc</span>
-                                </div>
+                                <div class="tab-pane fade" id="eth_tab" role="tabpanel" aria-labelledby="eth-tab">
+                                    <div class="d-flex flex-column text-align-center">
+                                        <span style="font-size: 1em; color: #aaa; word-wrap: normal; padding: 6px 0;">Ethereum/Polygon/Arbitrium/BSC</span>
+                                        <img class="addressQR" src="media/eth_qr.png"/>
+                                        <div class="addressBox" data-toggle="tooltip" data-placement="top" title="Tooltip on top" data-trigger="click" onclick="copy('0x8E70a98edA2cfc9d00CF766eB8583c518B3931A2')">
+                                            <span>0x8E70...31A2</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-clipboard" viewBox="0 0 16 16">
+                                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
 
-                            </div>
-                            <div class="addressBox" data-toggle="tooltip" data-placement="top" title="Tooltip on top" data-trigger="click" onclick="copy('0x84ac67A7C2CfeD6D4D4f42e44DA24fC30532b248')">
-                                <span>0x84ac...b248</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-clipboard" viewBox="0 0 16 16">
-                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-                                </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -495,10 +540,10 @@
     }
 
 
-    var puzzle = "ENCDTONER";
-    var answer = ['CONTENDER', 'CENTRED', 'CENTER', 'CENTRE', 'DECENT', 'RECENT', 'RENTED', 'RODENT', 'TENDER', 'TENDON', 'TENNER', 'ENTER', 'ERECT', 'NOTED', 'TENOR', 'TONED', 'TONER', 'TREND', 'CENT', 'DENT', 'DOTE', 'NOTE', 'RENT', 'TEED', 'TEEN', 'TEND', 'TOED', 'TONE', 'TORE', 'TORN', 'TREE', 'COT', 'DOT', 'NET', 'NOT', 'ORT', 'ROT', 'TED', 'TEE', 'TEN', 'TOD', 'TOE', 'TON', 'TOR']
-    var guesses = [];
-    const puzzle_number = Math.ceil(Math.abs(new Date('03/01/2022') - new Date()) / (1000 * 60 * 60 * 24)); 
+    function random(seed) {
+        var x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
 
 
     var today = new Date();
@@ -508,7 +553,14 @@
     today = dd + '/' + mm + '/' + yyyy;
 
 
-    $("#puzzle_info").text("PUZZLE #" + puzzle_number + " | " + today)
+    var puzzle = "ENCDTONER";
+    var answer = ['CONTENDER', 'CENTRED', 'CENTER', 'CENTRE', 'DECENT', 'RECENT', 'RENTED', 'RODENT', 'TENDER', 'TENDON', 'TENNER', 'ENTER', 'ERECT', 'NOTED', 'TENOR', 'TONED', 'TONER', 'TREND', 'CENT', 'DENT', 'DOTE', 'NOTE', 'RENT', 'TEED', 'TEEN', 'TEND', 'TOED', 'TONE', 'TORE', 'TORN', 'TREE', 'COT', 'DOT', 'NET', 'NOT', 'ORT', 'ROT', 'TED', 'TEE', 'TEN', 'TOD', 'TOE', 'TON', 'TOR']
+    var guesses = [];
+    const puzzle_number = Math.ceil(Math.abs(new Date('03/01/2022') - new Date()) / (1000 * 60 * 60 * 24)); 
+
+
+
+    $(".puzzle_info").text("PUZZLE #" + puzzle_number + " | " + today)
 
     for (i in answer) {
         id = "word" + i
@@ -560,8 +612,6 @@
             document.getElementById("timer").innerHTML = "Starting soon";
         }
     }, 1000);
-
-
     
     ////////////////////////////
 
@@ -680,6 +730,11 @@
         }
     })  
 
+    $(document).on('change', '#darkModeToggle', function() {
+        if(this.checked) {
+            
+        }
+    });
 
 
     $('#textbox').on('input', function() {
